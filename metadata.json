@@ -1,0 +1,5 @@
+{
+  "name": "DevArchitect AI",
+  "description": "A comprehensive Full-Stack Application Generator powered by Gemini 2.5. Generates production-ready blueprints, schemas, and code for frontend and backend based on user requirements.",
+  "requestFramePermissions": []
+}

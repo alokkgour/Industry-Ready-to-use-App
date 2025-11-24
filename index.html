@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevArchitect AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              brand: {
+                50: '#f0f9ff',
+                100: '#e0f2fe',
+                200: '#bae6fd',
+                300: '#7dd3fc',
+                400: '#38bdf8',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+                800: '#075985',
+                900: '#0c4a6e',
+                950: '#082f49',
+              },
+              dark: {
+                bg: '#0f1117',
+                surface: '#1e212b',
+                border: '#2d3342',
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out forwards',
+              'slide-up': 'slideUp 0.6s ease-out forwards',
+              'fade-in-up': 'slideUp 0.6s ease-out forwards',
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'scale-in': 'scaleIn 0.3s ease-out forwards',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              scaleIn: {
+                '0%': { opacity: '0', transform: 'scale(0.95)' },
+                '100%': { opacity: '1', transform: 'scale(1)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        background-color: #0f1117;
+        color: #e2e8f0;
+      }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0f1117; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #2d3342; 
+        border-radius: 6px;
+        border: 2px solid #0f1117;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #38bdf8; 
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+      }
+      .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
+      
+      .tab-4 {
+        tab-size: 4;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.0",
+    "clsx": "https://aistudiocdn.com/clsx@^2.1.1",
+    "jszip": "https://esm.run/jszip@3.10.1"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
