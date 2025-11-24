@@ -107,7 +107,8 @@ export const generateBlueprint = async (requirements: string): Promise<Blueprint
 
 export const generateModuleCode = async (
   blueprint: Blueprint, 
-  moduleType: 'frontend' | 'backend' | 'deployment'
+  moduleType: 'frontend' | 'backend' | 'deployment',
+  onChunk?: (chunk: string) => void
 ): Promise<string> => {
   if (!apiKey) throw new Error("API Key is missing");
 
@@ -123,11 +124,12 @@ export const generateModuleCode = async (
 
   const formatInstruction = `
     OUTPUT FORMAT:
-    Do NOT use markdown code blocks.
+    Do NOT use markdown code blocks or backticks.
     Output files using this strict XML format:
     
-    <file name="path/to/filename.ext">
-    [Full code content here]
+    <file name="src/App.tsx">
+    import React from 'react';
+    ...
     </file>
 
     <file name="package.json">
@@ -143,33 +145,33 @@ export const generateModuleCode = async (
       ${context}
 
       ROLE:
-      Expert Frontend Architect specializing in React/Next.js and Tailwind CSS.
+      Expert Frontend Architect specializing in React, Vite, and Tailwind CSS.
 
       TASK:
       Generate the complete, production-ready frontend source code.
 
       REQUIREMENTS:
-      1. Core Structure:
-         - 'src/main.tsx' (Entry)
-         - 'src/App.tsx' (Routing with Layout and ErrorBoundary)
-         - 'src/layout/DashboardLayout.tsx' (Sidebar + Header)
-         - 'src/pages/' (Landing, Login, Register, Dashboard, NotFound)
-         - 'src/components/ui/' (Button, Input, Card, Modal, Loader)
-         - 'src/context/AuthContext.tsx' (Mock authentication logic)
-         - 'src/hooks/' (useAuth, useData)
-         - 'src/lib/api.ts' (Axios/Fetch setup with error interceptors)
-         - 'src/styles/globals.css' (Tailwind imports)
-         - 'vite.config.ts' & 'package.json'
-
-      2. Features:
-         - **Robust Error Handling**: Wrap main routes in an Error Boundary. Display toast notifications for API errors.
-         - **Animations**: Use 'framer-motion' or Tailwind animate classes for page transitions.
-         - **Responsiveness**: Ensure mobile-first design for all pages.
-         - **Icons**: Use 'lucide-react' for all icons.
-
-      3. Quality:
-         - Code must be clean, typed (TypeScript), and modular.
-         - Do not use placeholders like "TODO". Implement a working mock version.
+      1. **Project Structure**:
+         - Use a standard Vite + React + TypeScript structure.
+         - 'index.html' (Include <div id="root"></div>).
+         - 'src/main.tsx' (Mount App to root).
+         - 'src/App.tsx' (Main router/layout).
+         - 'src/components/' (Reusable UI components).
+         - 'src/pages/' (Route components).
+         - 'src/lib/utils.ts' (Helper functions like clsx/tailwind-merge).
+      
+      2. **Live Preview Compatibility**:
+         - Use standard 'lucide-react' imports for icons.
+         - Do NOT use complex 3rd party libraries that require heavy config (like Redux) unless necessary. Use Context API or Zustand.
+         - Ensure 'export default' is used for page components.
+         - Use Tailwind CSS classes for ALL styling.
+      
+      3. **Quality & Responsiveness**:
+         - Implement a modern, clean dashboard UI.
+         - **CRITICAL**: Ensure all layouts are fully responsive (Mobile, Tablet, Desktop) using Tailwind's sm:, md:, lg: prefixes.
+         - Include responsive navigation (Sidebar allows collapse or hidden on mobile with hamburger menu).
+         - Mock data integration for immediate visual feedback.
+         - Handle loading and empty states in UI.
 
       ${formatInstruction}
     `;
@@ -179,32 +181,28 @@ export const generateModuleCode = async (
       ${context}
 
       ROLE:
-      Expert Backend Architect specializing in Node.js/Python/Go (based on stack).
+      Expert Backend Architect.
 
       TASK:
       Generate the complete, robust backend API source code.
 
       REQUIREMENTS:
-      1. Core Structure:
-         - 'src/server.ts' (Server entry)
-         - 'src/app.ts' (Express/App setup with Middleware)
-         - 'src/config/database.ts' (DB Connection)
-         - 'src/middleware/' (authMiddleware, errorMiddleware, rateLimiter)
-         - 'src/routes/' (authRoutes, userRoutes, entityRoutes)
-         - 'src/controllers/' (Logic for Auth and CRUD)
-         - 'src/models/' (Schema definitions)
-         - 'src/utils/' (AppError, catchAsync)
-         - 'package.json'
+      1. **Architecture**:
+         - Use a layered architecture (Controllers, Services, Repositories).
+         - 'src/server.ts' (Entry point).
+         - 'src/app.ts' (Express/FastAPI setup).
+      
+      2. **Security & Best Practices**:
+         - Implement global error handling middleware.
+         - structured logging.
+         - Input validation (Zod/Joi).
+         - Environment variable configuration (dotenv).
 
-      2. Security & Reliability:
-         - **Global Error Handling**: Implement a centralized error handling middleware.
-         - **Security**: Include Helmet, CORS, and basic Rate Limiting configuration.
-         - **Validation**: Use Zod or Joi for request validation.
-         - **Auth**: Implement a JWT-based authentication flow (register, login, me).
-
-      3. Quality:
-         - Use specific HTTP status codes.
-         - Write clean, commented, and modular code.
+      3. **Database & Seeding**:
+         - Include models/schemas matching the blueprint.
+         - **CRITICAL**: Include a seed script (e.g., 'prisma/seed.ts' or 'src/scripts/seed.ts') to populate the DB with mock data.
+         - Add a "seed" script to 'package.json' (e.g., "seed": "ts-node prisma/seed.ts").
+         - Ensure seed script handles conflicts (idempotent).
 
       ${formatInstruction}
     `;
@@ -220,23 +218,23 @@ export const generateModuleCode = async (
       Generate the Deployment & CI/CD Pipeline configuration.
 
       REQUIREMENTS:
-      1. Containerization:
-         - 'Dockerfile' (Multi-stage build for small image size).
-         - '.dockerignore'.
-      2. Orchestration:
-         - 'docker-compose.yml' (App, DB, Redis services).
-      3. CI/CD:
-         - '.github/workflows/ci-cd.yml' (Lint, Test, Build, Deploy).
-      4. Config:
-         - '.env.example' (List all necessary env vars).
-         - 'README.md' (Setup instructions).
+      1. **Docker**:
+         - Optimized 'Dockerfile' (multistage build).
+         - 'docker-compose.yml' for local dev (App + DB + Redis).
+      
+      2. **CI/CD**:
+         - GitHub Actions workflow for testing and building.
+      
+      3. **Documentation**:
+         - Comprehensive 'README.md' with setup steps.
+         - '.env.example'.
 
       ${formatInstruction}
     `;
   }
 
   try {
-    const response = await ai.models.generateContent({
+    const result = await ai.models.generateContentStream({
       model,
       contents: prompt,
       config: {
@@ -244,7 +242,14 @@ export const generateModuleCode = async (
       }
     });
 
-    return response.text || "Failed to generate code.";
+    let fullText = "";
+    for await (const chunk of result) {
+      const text = chunk.text();
+      fullText += text;
+      if (onChunk) onChunk(text);
+    }
+
+    return fullText || "Failed to generate code.";
   } catch (error) {
     console.error(`Code generation for ${moduleType} failed:`, error);
     return `// Error generating ${moduleType} code. Please try again. \n// ${error}`;
